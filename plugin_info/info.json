@@ -1,81 +1,55 @@
 {
-	"id": "template",
-	"name": "Template",
-	"pluginVersion": "0.1",
-	"specialAttributes": {
-		"object": {
-			"toto": {
-				"name": {
-					"fr_FR": "Plop je suis un attribut spécial"
-				},
-				"type": "input"
-			},
-			"toto2": {
-				"name": {
-					"fr_FR": "Plop je suis un attribut spécial number"
-				},
-				"type": "number"
-			}
-		},
-		"user": {
-			"toto": {
-				"name": {
-					"fr_FR": "Plop je suis un attribut spécial"
-				},
-				"type": "select",
-				"values": [
-					{
-						"value": "1",
-						"name": "valeur 1"
-					},
-					{
-						"value": "plop",
-						"name": "valeur plop"
-					}
-				]
-			}
-		}
-	},
-	"description": {
-		"fr_FR": "Template servant de base à la création de plugins pour Jeedom"
-	},
-	"licence": "AGPL",
-	"author": "Jeedom SAS",
-	"require": "4.2",
-	"os" : {
-		"min" : 10,
-		"max" : 12.99
-	},
-	"category": "programming",
-	"hasDependency": false,
-	"hasOwnDeamon": false,
-	"maxDependancyInstallTime": 0,
-	"changelog_beta": "https:\/\/doc.jeedom.com\/#language#\/plugins\/programming\/template\/beta\/changelog",
-	"changelog": "https:\/\/doc.jeedom.com\/#language#\/plugins\/programming\/template\/changelog",
-	"documentation_beta": "https:\/\/doc.jeedom.com\/#language#\/plugins\/programming\/template\/beta",
-	"documentation": "https:\/\/doc.jeedom.com\/#language#\/plugins\/programming\/template",
-	"link": {
-		"forum": "Lien vers le forum",
-		"video": "Lien vers une video"
-	},
-	"language": [
-		"fr_FR",
-		"en_US",
-		"es_ES",
-		"de_DE",
-		"ru_RU",
-		"id_ID",
-		"it_IT",
-		"ja_JP",
-		"pt_PT"
-	],
-	"compatibility": [
-		"smart",
-		"luna",
-		"atlas",
-		"rpi",
-		"docker",
-		"diy",
-		"mobile"
-	]
+    "id": "googleNews",
+    "name": "Google News",
+    "description": "A Jeedom plugin to display a personalized RSS feed from Google News in a dashboard widget.",
+    "licence": "AGPL",
+    "author": "Jules",
+    "require": "4.0",
+    "version": "0.1",
+    "category": "news",
+    "hasDependency": true,
+    "hasOwnDeamon": false,
+    "maxDependancyInstallTime": 0,
+    "documentation": "https://doc.jeedom.com/en_US/#LANG#/googleNews",
+    "changelog": "https://doc.jeedom.com/en_US/#LANG#/googleNews/changelog",
+    "link": {
+        "forum": "https://community.jeedom.com/tag/googleNews",
+        "market": "https://market.jeedom.com/index.php?v=d&p=market_display&id=#ID#",
+        "github": "https://github.com/USER_NAME/jeedom-googleNews"
+    },
+    "compatibility": [
+        "miniplus",
+        "smart",
+        "rpi",
+        "docker",
+        "diy",
+        "mobile",
+        "atlas",
+        "lunabox",
+        "jeedomboard",
+        "vm"
+    ],
+    "language": [
+        "fr_FR",
+        "en_US",
+        "de_DE",
+        "es_ES",
+        "ru_RU",
+        "id_ID",
+        "it_IT",
+        "pt_PT"
+    ],
+    "jquery": true,
+    "specialFeature": {
+        "value": "1",
+        "name": "Free"
+    },
+    "documentationBeta": "https://doc.jeedom.com/en_US/#LANG#/googleNews",
+    "changelogBeta": "https://doc.jeedom.com/en_US/#LANG#/googleNews/changelog",
+    "dependancy": {
+        "php": [
+            "curl",
+            "xml"
+        ]
+    }
 }

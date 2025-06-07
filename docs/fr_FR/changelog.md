@@ -1,30 +1,20 @@
-# Changelog plugin template
+# Changelog du Plugin Google News
 
->**IMPORTANT**
->
->S'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
+## Version 0.1 (Version Initiale)
 
-# 19/01/2022
-
-- Optimisations V4.2
-
-# 20/11/2020
-
-- Présentation officielle V4
-- Ajouts d'éléments d'informations et de paramètres pour les commandes
-
-# 16/11/2020
-
-- version minimale Jeedom: 3.3.39 (dernière MAJ critique)
-
-# 04/11/2020
-
-- Nouvelle présentation de la liste des objets
-
-# 07/08/2020
-
-- Ajout de commentaires
-
-# 17/05/2020
-
-- Mise à jour de la documentation
+-   Première version du plugin.
+-   Possibilité d'ajouter des flux Google News via URL (sujet ou recherche).
+-   Conversion automatique de l'URL Google News en URL RSS.
+-   Récupération et analyse des flux RSS.
+-   Stockage des articles dans la base de données Jeedom.
+-   Widget pour afficher les articles sur le tableau de bord.
+-   Options de configuration :
+    -   URL Google News.
+    -   Nombre d'articles à afficher.
+    -   Nombre maximal d'articles à stocker.
+    -   Ordre de tri (plus récent/plus ancien en premier).
+    -   Fréquence de rafraîchissement basée sur Cron.
+-   Capacité de rafraîchissement manuel.
+-   Gestion basique des erreurs et journalisation.
+-   Vérifications à l'installation pour les extensions PHP cURL et XML.
+-   Documentation en anglais et en français.

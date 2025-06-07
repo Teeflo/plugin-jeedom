@@ -1,0 +1,128 @@
+<div class="eqLogic-widget eqLogicDisplay widget-googleNews" data-eqLogic_id="#eqLogic_id#" data-eqLogic_uid="#eqLogic_uid#" data-version="dashboard" style="height:auto!important;min-height:100px;">
+    <div class="widget-header">
+        <span class="widget-name"><i class="fas fa-rss"></i> #name_display#</span>
+        <span class="widget-refresh-button">
+            <i class="fas fa-sync" title="{{Rafraîchir le widget}}" onclick="googleNews_refreshWidgetContent('#eqLogic_id#');"></i>
+        </span>
+    </div>
+    <div class="widget-content">
+        <?php
+        // This template is included by core/ajax/googleNews.ajax.php (action getWidgetHTML)
+        // and potentially by Jeedom's core when displaying the widget.
+        // Variables like $_widgetController, $_widgetArticles should be set by the caller.
+        // If called directly by Jeedom core for widget display, we need to get the eqLogic object.
+
+        if (!isset($_widgetController)) {
+            // Fallback if not included via AJAX context, try to get from standard widget context
+            // Jeedom usually provides $eqLogic or $widget
+            if (isset($eqLogic)) {
+                $_widgetController = $eqLogic;
+            } elseif (isset($widget)) {
+                $_widgetController = $widget->getEqLogic();
+            } else {
+                 // If #eqLogic_id# is replaced by Jeedom, we can use it.
+                 // Note: PHP replacement of #eqLogic_id# might only happen for certain contexts.
+                 // For direct include, it might not be available as a PHP variable.
+                 // This template is primarily designed to be rendered via the AJAX call which sets up $_widgetController.
+                echo "<p>{{Erreur: Contexte du widget non défini.}}</p>";
+                // We might need to use the #eqLogic_id# placeholder if available through Jeedom's direct widget rendering
+                // $eqLogic_id_placeholder = '#eqLogic_id#';
+                // if (strpos($eqLogic_id_placeholder, '#') === false) { // Check if replaced
+                //    $_widgetController = eqLogic::byId($eqLogic_id_placeholder);
+                // } else {
+                //     echo "<p>{{Erreur: ID d'équipement non disponible.}}</p>";
+                //     return; // Exit if no controller
+                // }
+            }
+        }
+
+        if (!is_object($_widgetController) || $_widgetController->getEqType_name() != 'googleNews') {
+            echo "<p>{{Erreur: Equipement Google News invalide.}}</p>";
+            return;
+        }
+
+        // Use passed articles if available (from AJAX), otherwise fetch them
+        if (!isset($_widgetArticles)) {
+            $maxDisplay = $_widgetController->getConfiguration('maxDisplayArticles', 10);
+            $sortOrder = $_widgetController->getConfiguration('sortOrder', 'DESC');
+            $_widgetArticles = $_widgetController->getArticles($maxDisplay, $sortOrder);
+        }
+
+        if (empty($_widgetArticles)) {
+            echo '<p class="no-articles">{{Aucun article à afficher pour le moment.}}</p>';
+        } else {
+            foreach ($_widgetArticles as $article) {
+                echo '<div class="article">';
+                // Title
+                echo '<div class="article-title">';
+                echo '<a href="' . htmlspecialchars($article['link']) . '" target="_blank">' . htmlspecialchars($article['title']) . '</a>';
+                echo '</div>';
+                // Date
+                if (!empty($article['pubDate'])) {
+                    try {
+                        // Format date nicely - requires datetime to be valid
+                        $date = new DateTime($article['pubDate']);
+                        // Format like "Jan 01, 2023 15:30" or locale specific
+                        // Checking if Intl extension is available for localized format
+                        if (class_exists('IntlDateFormatter')) {
+                            $fmt = new IntlDateFormatter(
+                                explode(',',jeeLocale::getLocale())[0], // Get primary locale e.g. 'fr_FR' from 'fr_FR,en_US'
+                                IntlDateFormatter::MEDIUM, // Date type
+                                IntlDateFormatter::SHORT,  // Time type
+                                date_default_timezone_get() // Timezone
+                                // IntlDateFormatter::GREGORIAN // Calendar
+                            );
+                            $formattedDate = $fmt->format($date);
+                        } else {
+                            $formattedDate = $date->format('M d, Y H:i');
+                        }
+                        echo '<div class="article-date">' . htmlspecialchars($formattedDate) . '</div>';
+                    } catch (Exception $e) {
+                        // Fallback for invalid date format
+                        echo '<div class="article-date">' . htmlspecialchars($article['pubDate']) . '</div>';
+                    }
+                }
+                // Description (snippet)
+                if (!empty($article['description'])) {
+                    $snippet = strip_tags($article['description']); // Remove HTML from description
+                    // Limit snippet length
+                    $maxLength = 150; // characters
+                    if (mb_strlen($snippet) > $maxLength) {
+                        $snippet = mb_substr($snippet, 0, $maxLength) . '...';
+                    }
+                    echo '<div class="article-description">' . htmlspecialchars($snippet) . '</div>';
+                }
+                echo '</div>';
+            }
+        }
+        ?>
+    </div>
+    <div class="widget-footer">
+        <span class="last-updated">
+            <?php
+                // Try to get the last update time of the eqLogic object or its data
+                // This could be a property of eqLogic or fetched from a command/status
+                // For now, just a placeholder or could use current time as "refreshed at"
+                // echo '{{Dernière mise à jour}}: ' . date('Y-m-d H:i:s');
+                // Or, if the eqLogic object has a status for last update:
+                 if (is_object($_widgetController) && method_exists($_widgetController, 'getStatus')) {
+                     $lastUpdateTimestamp = $_widgetController->getStatus('lastUpdate'); // Assuming such a status exists
+                     if ($lastUpdateTimestamp) {
+                         echo '{{Mis à jour le}} ' . date('d/m/Y H:i', $lastUpdateTimestamp);
+                     }
+                 }
+            ?>
+        </span>
+    </div>
+</div>
+<!-- Include CSS for the widget -->
+<style>
+<?php include dirname(__FILE__) . '/../../../assets/css/googleNews.css'; ?>
+</style>
+<script>
+    // Widget-specific JS can go here if needed, or rely on global googleNews.js
+    // For example, ensuring the refresh function is available.
+    if (typeof googleNews_refreshWidgetContent !== 'function') {
+        // console.warn("googleNews_refreshWidgetContent function not found. Widget refresh might not work from icon click.");
+    }
+</script>

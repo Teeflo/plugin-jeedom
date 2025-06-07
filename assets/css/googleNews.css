@@ -1,0 +1,60 @@
+/* assets/css/googleNews.css */
+
+.widget-googleNews .article {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.widget-googleNews .article:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.widget-googleNews .article-title {
+    font-weight: bold;
+    font-size: 1.1em; /* Slightly larger title */
+}
+
+.widget-googleNews .article-title a {
+    text-decoration: none;
+    /* color: #337ab7; */ /* Using Jeedom's default link color is better */
+}
+
+.widget-googleNews .article-title a:hover {
+    text-decoration: underline;
+}
+
+.widget-googleNews .article-date {
+    font-size: 0.8em; /* Smaller date */
+    color: #888; /* Lighter date color */
+    margin-bottom: 5px;
+}
+
+.widget-googleNews .article-description {
+    font-size: 0.9em;
+    line-height: 1.4;
+    color: #555; /* Slightly darker description */
+}
+
+.widget-googleNews .no-articles {
+    text-align: center;
+    color: #888;
+    padding: 20px; /* More padding */
+    font-style: italic;
+}
+
+.widget-googleNews .widget-footer {
+    margin-top: 10px;
+    text-align: right;
+    font-size:0.9em;
+}
+.widget-googleNews .widget-footer .last-updated {
+    color: #999;
+    font-size: 0.9em;
+    margin-right:10px;
+}
+
+.widget-googleNews .widget-refresh-button .fas {
+    cursor: pointer;
+}
