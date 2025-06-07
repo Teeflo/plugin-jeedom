@@ -1,30 +1,11 @@
-# Changelog plugin template
+# Changelog Google News
 
->**IMPORTANT**
->
->S'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
+## Version 0.1 (Date de création)
 
-# 19/01/2022
-
-- Optimisations V4.2
-
-# 20/11/2020
-
-- Présentation officielle V4
-- Ajouts d'éléments d'informations et de paramètres pour les commandes
-
-# 16/11/2020
-
-- version minimale Jeedom: 3.3.39 (dernière MAJ critique)
-
-# 04/11/2020
-
-- Nouvelle présentation de la liste des objets
-
-# 07/08/2020
-
-- Ajout de commentaires
-
-# 17/05/2020
-
-- Mise à jour de la documentation
+*   Première version du plugin.
+*   Récupération des flux Google News via transformation d'URL.
+*   Stockage des articles en base de données.
+*   Nettoyage automatique des anciens articles.
+*   Widget personnalisable pour afficher les N derniers articles.
+*   Commandes pour rafraîchissement manuel, statut, et nombre d'articles.
+*   Configuration par équipement (URL, rétention, nombre d'articles widget, cron).

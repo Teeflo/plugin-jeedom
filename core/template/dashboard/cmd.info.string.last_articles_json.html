@@ -1,0 +1,99 @@
+<div class="cmd cmd-widget cursor #uid#" data-type="info" data-subtype="string" data-cmd_id="#id#" data-cmd_uid="#uid#" data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+    <div class="title #hide_name#">
+        <div class="cmdName">#name_display#</div>
+    </div>
+    <div class="content-sm">
+        <div class="googleNews-widget-articles">
+            <!-- Les articles seront injectés ici par JavaScript -->
+        </div>
+    </div>
+    <script>
+        (function ($) {
+            var initialCmdId = parseInt('#id#', 10);
+            var initialState = '#state#';
+            if (initialState === '' || initialState === '#state#') {
+                initialState = '[]';
+            }
+
+            function updateWidget(_options) {
+                var cmdElement = $('.cmd[data-cmd_id=' + _options.cmd_id + ']');
+                if (!cmdElement.length) {
+                    return;
+                }
+                var articlesContainer = cmdElement.find('.googleNews-widget-articles');
+                articlesContainer.empty();
+
+                var articles = [];
+                if (_options.display_value && _options.display_value !== '#state#') {
+                    try {
+                        articles = JSON.parse(_options.display_value);
+                    } catch (e) {
+                        console.error('Erreur JSON.parse pour cmd_id ' + _options.cmd_id + ':', e, "Données brutes:", _options.display_value);
+                        articlesContainer.html("<span style='color:red;'>{{Erreur: Données invalides.}}</span>");
+                        return;
+                    }
+                } else if (_options.display_value === '#state#') {
+                     articlesContainer.html("<span><i>{{Initialisation...}}</i></span>");
+                     return;
+                }
+
+
+                if (!articles || articles.length === 0) {
+                    articlesContainer.html("<span><i>{{Aucun article à afficher.}}</i></span>");
+                } else {
+                    var ul = $('<ul class="list-unstyled"></ul>');
+                    articles.forEach(function (article) {
+                        var li = $('<li></li>');
+                        var link = $('<a></a>').attr('href', article.link).attr('target', '_blank').text(article.title);
+                        li.append(link);
+
+                        if (article.pubDate) {
+                            try {
+                                var d = new Date(article.pubDate.replace(/-/g, '/')); // Remplacer les tirets pour compatibilité Safari/iOS
+                                var dateString = d.toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+                                var dateSpan = $('<small class="googleNews-article-date"></small>').text(' (' + dateString + ')');
+                                li.append(dateSpan);
+                            } catch(e) {
+                                console.warn("Erreur de formatage de date pour pubDate:", article.pubDate, e);
+                                // Optionnel: afficher la date brute ou un message d'erreur pour la date
+                                var dateSpanError = $('<small class="googleNews-article-date"></small>').text(' (date invalide)');
+                                li.append(dateSpanError);
+                            }
+                        }
+                        ul.append(li);
+                    });
+                    articlesContainer.append(ul);
+                }
+            }
+
+            if (typeof jeedom.cmd.update[initialCmdId] !== 'function') {
+                jeedom.cmd.update[initialCmdId] = updateWidget;
+            } else {
+                // Si la fonction est déjà définie (par exemple, par une instance précédente du même widget sur la page),
+                // il est généralement préférable de ne pas la remplacer aveuglément,
+                // ou de s'assurer que la logique de mise à jour est idempotente et correcte.
+                // Pour ce cas, on la remplace pour s'assurer que la dernière version du code est utilisée.
+                 jeedom.cmd.update[initialCmdId] = updateWidget;
+            }
+
+            // Fonction pour tenter l'appel initial
+            function tryInitialCall() {
+                if (typeof jeedom.cmd.update[initialCmdId] === 'function') {
+                    jeedom.cmd.update[initialCmdId]({ display_value: initialState, cmd_id: initialCmdId });
+                } else {
+                     console.warn('Widget googleNews (cmd_id: ' + initialCmdId + '): jeedom.cmd.update non disponible au moment de l\'appel initial direct. Tentative via $(document).ready().');
+                     $(document).ready(function() {
+                        if (typeof jeedom.cmd.update[initialCmdId] === 'function') {
+                            jeedom.cmd.update[initialCmdId]({ display_value: initialState, cmd_id: initialCmdId });
+                        } else {
+                            console.error('Widget googleNews (cmd_id: ' + initialCmdId + '): jeedom.cmd.update toujours non disponible après $(document).ready(). Le widget ne sera pas initialisé.');
+                        }
+                    });
+                }
+            }
+
+            tryInitialCall();
+
+        })(jQuery);
+    </script>
+</div>

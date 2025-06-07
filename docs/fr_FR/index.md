@@ -1,104 +1,55 @@
-# Plugin Google News Reader pour Jeedom
+# Plugin Google News pour Jeedom
 
 ## Description
 
-Le plugin **Google News Reader** permet de récupérer et d'afficher des flux d'actualités personnalisés depuis Google News directement sur votre dashboard Jeedom. Vous pouvez suivre des sujets spécifiques, des recherches ou des catégories de Google News.
+Le plugin Google News vous permet d'intégrer et d'afficher des flux d'actualités personnalisés provenant de Google News directement dans votre interface Jeedom. Configurez simplement un ou plusieurs flux Google News et affichez les derniers titres dans un widget dédié.
 
 ## Installation
 
-1.  **Depuis le Market Jeedom :**
-    *   Accédez au Market Jeedom depuis votre interface Jeedom.
-    *   Recherchez le plugin "Google News Reader".
-    *   Cliquez sur "Installer" et suivez les instructions.
+L'installation est standard et s'effectue depuis le Market Jeedom.
+Le plugin nécessite `curl` et l'extension PHP `xml` pour fonctionner. Ces dépendances sont normalement vérifiées par Jeedom lors de l'installation.
 
-2.  **Depuis GitHub (méthode alternative pour les développeurs) :**
-    *   Téléchargez les fichiers du plugin depuis le dépôt GitHub (si disponible).
-    *   Placez les fichiers dans le répertoire `plugins/googleNewsReader` de votre installation Jeedom.
-    *   Depuis la page de gestion des plugins dans Jeedom, activez le plugin.
+## Configuration des Équipements
 
-### Dépendances
+Après l'installation du plugin, vous devez configurer au moins un équipement pour récupérer un flux d'actualités.
 
-Le plugin nécessite les extensions PHP suivantes :
-*   `php-xml` (pour le parsing des flux RSS)
-*   `php-curl` (pour la récupération des flux RSS)
-
-Ces dépendances sont normalement installées automatiquement par Jeedom lors de l'installation du plugin si elles sont manquantes et si votre système le permet. Si vous rencontrez des problèmes, assurez-vous que ces packages sont bien installés sur votre système (`sudo apt-get install php-xml php-curl`).
-
-## Configuration du Plugin
-
-Après l'installation, le plugin lui-même n'a pas de configuration globale. Vous devez ajouter et configurer des équipements pour chaque flux Google News que vous souhaitez suivre.
-
-### Configuration d'un équipement
-
-1.  Accédez à la page du plugin Google News Reader dans Jeedom (Plugins → Organisation → Google News Reader).
-2.  Cliquez sur le bouton "Ajouter" pour créer un nouvel équipement (un nouveau flux à suivre).
+1.  Allez dans `Plugins` -> `Organisation` -> `Google News`.
+2.  Cliquez sur le bouton `Ajouter` pour créer un nouvel équipement (un nouveau flux).
 3.  Donnez un nom à votre équipement (ex: "Actualités Tech", "Infos Locales").
-4.  Configurez l'objet parent si vous le souhaitez.
-5.  Activez et rendez visible l'équipement.
+4.  Assurez-vous que l'équipement est `Activer` et `Visible`.
+5.  Dans l'onglet `Equipement` (ou la section de configuration principale de l'équipement) :
+    *   **URL Google News** : Saisissez ici l'URL complète de la page Google News que vous souhaitez suivre.
+        *   Exemple pour un sujet : `https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB` (Sujet Technologie)
+        *   Exemple pour une publication : `https://news.google.com/publications/CAAqBwgKMMOutgsw--PBAw` (Publication spécifique)
+        Le plugin transformera automatiquement cette URL en l'URL du flux RSS correspondant.
+    *   **Rétention des articles (jours)** : Indiquez combien de jours les articles doivent être conservés en base de données. Passé ce délai, les anciens articles seront purgés pour éviter une accumulation excessive. (Défaut : 7 jours).
+    *   **Max articles pour widget** : Définissez le nombre maximum d'articles qui seront récupérés et affichés dans le widget. (Défaut : 5 articles).
+    *   **Fréquence de rafraîchissement (cron)** : Vous pouvez définir une planification cron pour que le flux soit rafraîchi automatiquement (ex: `*/30 * * * *` pour toutes les 30 minutes). Laissez vide si vous préférez déclencher les rafraîchissements manuellement via la commande `Rafraîchir`.
 
-6.  **Paramètres Spécifiques :**
-    *   **URL de la page Google News :** C'est le paramètre le plus important.
-        *   Ouvrez votre navigateur et allez sur [Google News](https://news.google.com/).
-        *   Naviguez jusqu'à la section, le sujet ou effectuez la recherche que vous souhaitez suivre.
-        *   Copiez l'URL complète depuis la barre d'adresse de votre navigateur.
-        *   Exemples d'URLs valides :
-            *   Rubrique "Technologie" : `https://news.google.com/topics/CAAqJggKJisLoadingAnD4Kz8gEApLACKpLACMmpLAZ0hOd8O0zaA8?hl=fr&gl=FR&ceid=FR%3Afr` (l'ID peut varier)
-            *   Recherche "Jeedom" : `https://news.google.com/search?q=jeedom&hl=fr&gl=FR&ceid=FR%3Afr`
-        *   Collez cette URL dans le champ "URL de la page Google News". Le plugin la convertira automatiquement en URL de flux RSS.
-    *   **Nombre d'articles à afficher :** Définissez combien d'articles (les plus récents) doivent être récupérés et affichés dans le widget (par défaut 5, maximum 50).
-    *   **Auto-actualisation (cron) :** Configurez la fréquence à laquelle le flux doit être rafraîchi automatiquement. Utilisez l'assistant cron (bouton `?`) pour choisir une fréquence (ex: toutes les heures `0 * * * *`, toutes les 15 minutes `*/15 * * * *`).
+6.  Sauvegardez votre équipement.
 
-7.  Sauvegardez votre équipement.
+## Commandes de l'équipement
 
-## Utilisation du Widget
+Chaque équipement Google News disposera des commandes suivantes :
 
-Une fois configuré, l'équipement apparaîtra sur votre Dashboard Jeedom (si vous l'avez rendu visible).
+*   **Rafraîchir** (action) : Déclenche manuellement la récupération des derniers articles pour ce flux.
+*   **Derniers Articles JSON** (info/chaîne) : Contient les derniers articles au format JSON. C'est cette commande qui est utilisée par le widget. (Normalement non visible sur le dashboard).
+*   **Nombre d'articles** (info/numérique) : Affiche le nombre total d'articles actuellement stockés en base pour ce flux, après application de la rétention.
+*   **Statut Rafraîchissement** (info/chaîne) : Indique l'état de la dernière tentative de rafraîchissement (OK, En cours, Erreur URL, etc.).
 
-Le widget affiche :
-*   Un bouton **"Rafraîchir"** en haut à droite pour mettre à jour manuellement le flux.
-*   La liste des articles récupérés, avec :
-    *   Le **titre** de l'article (cliquable, ouvre l'article original dans un nouvel onglet).
-    *   La **date de publication**.
-    *   Un court **extrait** de la description.
+## Affichage (Widget)
 
-Si aucun article n'est affiché, vérifiez la configuration de l'URL Google News ou essayez de rafraîchir manuellement. Un message peut indiquer la dernière tentative de mise à jour.
+Si un équipement est configuré et visible, sa commande `Derniers Articles JSON` (qui est configurée pour utiliser le template de widget du plugin) affichera les titres des derniers articles.
+*   Chaque titre est un lien cliquable vers l'article complet sur Google News.
+*   La date de publication est affichée à côté de chaque titre.
+*   Le nombre d'articles affichés dépend du paramètre "Max articles pour widget" de l'équipement.
 
-### Commandes de l'équipement
+## Dépannage
 
-Dans l'onglet "Commandes" de la configuration de l'équipement, vous trouverez :
-*   **Informations (non visibles sur le widget par défaut) :**
-    *   `Titre du dernier article`
-    *   `Lien du dernier article`
-    *   `Description du dernier article`
-    *   `Date de publication du dernier article`
-    *   `Dernière mise à jour du flux` (indique la date et l'heure du dernier rafraîchissement réussi ou de l'erreur)
-*   **Actions :**
-    *   `Rafraîchir le flux` : Permet de déclencher un rafraîchissement manuel (identique au bouton sur le widget).
+*   **Vérifiez les logs** : En cas de problème, consultez les logs du plugin (`googleNews`) dans `Analyse` -> `Logs` pour des messages d'erreur détaillés.
+*   **URL invalide** : Assurez-vous que l'URL copiée depuis Google News est correcte et correspond bien à un sujet (`/topics/`) ou une publication (`/publications/`).
+*   **Dépendances** : Vérifiez que `curl` et l'extension `php-xml` sont bien installés et activés sur votre système Jeedom.
 
-Ces commandes peuvent être utilisées dans des scénarios, des designs, ou d'autres interactions avec Jeedom.
+## Limitations
 
-## FAQ / Dépannage
-
-*   **Le widget reste vide ou affiche "Aucun article".**
-    *   Vérifiez que l'URL Google News configurée est correcte et fonctionne dans votre navigateur.
-    *   Essayez de rafraîchir manuellement le flux via le bouton sur le widget ou la commande "Rafraîchir le flux".
-    *   Consultez les logs du plugin (`googleNewsReader`) dans Jeedom (Analyse → Logs) pour des messages d'erreur (ex: "Impossible de récupérer le flux RSS", "Erreur parsing XML", "URL Google News non reconnue").
-    *   Assurez-vous que les dépendances `php-xml` et `php-curl` sont bien installées et actives sur votre serveur Jeedom.
-    *   Vérifiez votre connexion internet.
-
-*   **Le flux ne se met pas à jour automatiquement.**
-    *   Vérifiez la configuration du cron "Auto-actualisation" sur la page de l'équipement. Assurez-vous qu'elle est valide et activée.
-    *   Vérifiez que le moteur de tâches de Jeedom fonctionne correctement.
-
-*   **L'URL Google News que je veux utiliser ne fonctionne pas.**
-    *   Le plugin essaie de convertir les URLs Google News standards. Certains formats d'URL très spécifiques ou anciens pourraient ne pas être compatibles. Privilégiez les URLs obtenues en naviguant sur le site Google News (sections "Topics" ou résultats de "Search").
-    *   Si vous suspectez un problème de conversion d'URL, vous pouvez chercher l'URL du flux RSS directement (souvent en ajoutant `/rss/` dans l'URL Google News ou en cherchant une icône RSS sur la page) et essayer de la tester avec un lecteur RSS externe pour valider le flux. Cependant, le plugin est conçu pour prendre l'URL Google News standard.
-
-*   **J'ai une erreur "L'extension PHP SimpleXML est manquante" ou "L'extension PHP cURL est manquante" à l'installation.**
-    *   Cela signifie que les dépendances PHP n'ont pas pu être installées ou activées. Vous devrez peut-être les installer manuellement sur votre système (ex: `sudo apt-get update && sudo apt-get install php-xml php-curl`) puis redémarrer votre serveur web.
-
-## Changelog
-
-Voir le fichier `changelog.md` (disponible dans le plugin ou sur le Market).
-
-```
+*   Le plugin se base sur la structure des flux RSS de Google News. Si Google modifie cette structure de manière significative, le plugin pourrait nécessiter une mise à jour.

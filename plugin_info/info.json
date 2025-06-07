@@ -1,45 +1,37 @@
 {
-	"id": "googleNewsReader",
-	"name": "Google News",
-	"pluginVersion": "0.1",
-	"description": "Plugin pour récupérer et afficher un flux RSS personnalisé depuis Google News.",
-	"licence": "AGPL",
-	"author": "Développeur IA",
-	"require": "4.2",
-	"category": "news",
-	"hasDependency": true,
-	"dependencies": {
-		"apt": {
-			"packages": [
-				"php-xml",
-				"php-curl"
-			]
-		}
-	},
-	"hasOwnDeamon": false,
-	"maxDependancyInstallTime": 0,
-	"changelog_beta": "https:\/\/doc.jeedom.com\/#language#\/plugins\/news\/googleNewsReader\/beta\/changelog",
-	"changelog": "https:\/\/doc.jeedom.com\/#language#\/plugins\/news\/googleNewsReader\/changelog",
-	"documentation_beta": "https:\/\/doc.jeedom.com\/#language#\/plugins\/news\/googleNewsReader\/beta",
-	"documentation": "https:\/\/doc.jeedom.com\/#language#\/plugins\/news\/googleNewsReader",
-	"language": [
-		"fr_FR",
-		"en_US",
-		"es_ES",
-		"de_DE",
-		"ru_RU",
-		"id_ID",
-		"it_IT",
-		"ja_JP",
-		"pt_PT"
-	],
-	"compatibility": [
-		"smart",
-		"luna",
-		"atlas",
-		"rpi",
-		"docker",
-		"diy",
-		"mobile"
-	]
+    "id": "googleNews",
+    "name": "Google News",
+    "description": "Plugin pour afficher les flux d'actualités Google News.",
+    "licence": "MIT",
+    "author": "Jules AI",
+    "require": "4.2",
+    "version": "0.1",
+    "category": "news",
+    "hasDependency": false,
+    "hasOwnDeamon": false,
+    "maxDowngradeVersion": "",
+    "isDocumentationManaged": true,
+    "documentation": "https://github.com/USER/REPO/blob/master/docs/fr_FR/index.md",
+    "changelog": "https://github.com/USER/REPO/blob/master/docs/fr_FR/changelog.md",
+    "language": [
+        "fr_FR",
+        "en_US"
+    ],
+    "compatibility": [],
+    "icon": "fas fa-newspaper",
+    "installation": "Aucune configuration spécifique nécessaire au niveau du plugin, seulement sur chaque équipement.",
+    "systemDeps": {
+        "cmd": {
+            "name": "curl",
+            "debian": "curl",
+            "docker": "curl"
+        }
+    },
+    "phpExtension": [
+        {
+            "name": "xml",
+            "debian": "php-xml",
+            "docker": "php-xml"
+        }
+    ]
 }
