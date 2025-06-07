@@ -1,0 +1,118 @@
+/* Styles pour le widget Google News Reader */
+
+/* Ciblage général du widget. Jeedom ajoute .widget et data-eqtype.
+   .content-sm est souvent utilisé par Jeedom pour le contenu des widgets. */
+.widget[data-eqtype="googleNewsReader"] .content-sm .googleNewsReader-article,
+.eqLogicDisplayCard[data-eqtype="googleNewsReader"] .googleNewsReader-article { /* For view page if needed */
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eeeeee; /* Lighter color often used in Jeedom */
+}
+
+.widget[data-eqtype="googleNewsReader"] .content-sm .googleNewsReader-article:last-child,
+.eqLogicDisplayCard[data-eqtype="googleNewsReader"] .googleNewsReader-article:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.widget[data-eqtype="googleNewsReader"] .content-sm .googleNewsReader-article h4,
+.eqLogicDisplayCard[data-eqtype="googleNewsReader"] .googleNewsReader-article h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1.1em; /* Default Jeedom widget title font-size is often smaller */
+    line-height: 1.2; /* Ensure consistent line height */
+}
+
+.widget[data-eqtype="googleNewsReader"] .content-sm .googleNewsReader-article h4 a.article-title,
+.eqLogicDisplayCard[data-eqtype="googleNewsReader"] .googleNewsReader-article h4 a.article-title {
+    color: var(--link-color, #337ab7); /* Use Jeedom variable if available, fallback to default */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.widget[data-eqtype="googleNewsReader"] .content-sm .googleNewsReader-article h4 a.article-title:hover,
+.eqLogicDisplayCard[data-eqtype="googleNewsReader"] .googleNewsReader-article h4 a.article-title:hover {
+    text-decoration: underline;
+    color: var(--link-hover-color, #23527c); /* Use Jeedom variable if available */
+}
+
+.widget[data-eqtype="googleNewsReader"] .content-sm .googleNewsReader-article p.article-description,
+.eqLogicDisplayCard[data-eqtype="googleNewsReader"] .googleNewsReader-article p.article-description {
+    font-size: 0.9em;
+    color: var(--text-color, #555555); /* Use Jeedom variable */
+    line-height: 1.4;
+    max-height: 4.2em; /* Approximately 3 lines (1.4 * 3) */
+    overflow: hidden;
+    /* text-overflow: ellipsis; only works for single line overflow */
+    /* For multi-line ellipsis, -webkit-line-clamp is an option but not universally supported:
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    */
+    margin-bottom: 5px;
+}
+
+.widget[data-eqtype="googleNewsReader"] .content-sm .googleNewsReader-article small.article-date,
+.eqLogicDisplayCard[data-eqtype="googleNewsReader"] .googleNewsReader-article small.article-date {
+    font-size: 0.8em;
+    color: var(--text-muted-color, #777777); /* Use Jeedom variable */
+    display: block;
+    margin-top: 5px;
+}
+
+/* Style pour le bouton de rafraîchissement dans le widget */
+/* The toHtml() method places this button in a div, not absolutely positioned.
+   If absolute positioning is desired, the HTML structure in toHtml() would need adjustment,
+   or this CSS would need to be very specific to overcome the div.
+   The current CSS assumes the button is part of the normal flow or its container allows this. */
+.widget[data-eqtype="googleNewsReader"] .googleNewsReader-refresh-widget {
+    /* If it's a link styled as a button by Jeedom's btn-default, it will mostly follow Jeedom's button styles.
+       The following would apply if it's a custom absolute element:
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    */
+    cursor: pointer;
+}
+
+.widget[data-eqtype="googleNewsReader"] .googleNewsReader-refresh-widget i {
+    font-size: 1em; /* Default icon size */
+    color: var(--link-color, #777777); /* Default color for icon */
+}
+
+.widget[data-eqtype="googleNewsReader"] .googleNewsReader-refresh-widget:hover i {
+    color: var(--link-hover-color, #337ab7); /* Hover color for icon */
+}
+
+/* Style pour le message "Aucun article" */
+/* Ensure the div in toHtml() has class="no-articles-message" */
+.widget[data-eqtype="googleNewsReader"] .no-articles-message,
+.eqLogicDisplayCard[data-eqtype="googleNewsReader"] .no-articles-message {
+    color: var(--text-muted-color, #777777);
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0; /* Add some vertical padding */
+}
+
+/* Container for articles, enabling scroll if content overflows */
+.widget[data-eqtype="googleNewsReader"] .googleNewsReader-articles-container {
+    overflow-y: auto;
+    /* height is set inline in toHtml by calc(100% - 60px); ensure this is appropriate */
+    padding-right: 5px; /* Add a little padding if scrollbar appears */
+}
+
+/* General widget header styling (if not covered by Jeedom's default widget styles) */
+.widget[data-eqtype="googleNewsReader"] .widget-name {
+    /* font-weight: bold; */ /* Already in toHtml inline style */
+    /* text-align: center; */ /* Already in toHtml inline style */
+    /* margin-bottom: 10px; */ /* Already in toHtml inline style for the main name */
+    /* color: var(--widget-title-color, #333); */
+}
+
+/* Ensure the widget content area fills available space if using flex/grid for layout */
+.widget[data-eqtype="googleNewsReader"] .content-sm {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
